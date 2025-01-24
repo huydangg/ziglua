@@ -4334,7 +4334,7 @@ pub const Lua = opaque {
                 }
                 _ = lua.pushStringZ(value);
             },
-            .C, .Many, .Slice => {
+            .c, .many, .slice => {
                 std.debug.assert(info.child == u8);
                 if (info.sentinel) |sentinel| {
                     const casted: *info.child = @ptrCast(@constCast(sentinel));
@@ -4374,7 +4374,7 @@ pub const Lua = opaque {
                         }
                         lua.pushLightUserdata(@ptrCast(value));
                     },
-                    .c, .Many, .Slice => {
+                    .c, .many, .slice => {
                         lua.createTable(0, 0);
                         for (value, 0..) |index_value, i| {
                             try lua.pushAny(i + 1);
@@ -4530,7 +4530,7 @@ pub const Lua = opaque {
                         return if (info.sentinel == null) string[0..end] else string[0..end :0];
                     }
                 } else switch (info.size) {
-                    .Slice, .Many => {
+                    .slice, .many => {
                         if (!allow_alloc) {
                             @compileError("toAny cannot allocate memory, try using toAnyAlloc");
                         }
