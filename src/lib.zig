@@ -4374,7 +4374,7 @@ pub const Lua = opaque {
                         }
                         lua.pushLightUserdata(@ptrCast(value));
                     },
-                    .C, .Many, .Slice => {
+                    .c, .Many, .Slice => {
                         lua.createTable(0, 0);
                         for (value, 0..) |index_value, i| {
                             try lua.pushAny(i + 1);
