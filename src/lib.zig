@@ -4313,7 +4313,7 @@ pub const Lua = opaque {
         const childinfo = @typeInfo(typeinfo.child);
         if (typeinfo.child == u8 and typeinfo.size != .One) {
             return true;
-        } else if (typeinfo.size == .One and childinfo == .array and childinfo.array.child == u8) {
+        } else if (typeinfo.size == .one and childinfo == .array and childinfo.array.child == u8) {
             return true;
         }
         return false;
