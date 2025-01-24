@@ -4311,7 +4311,7 @@ pub const Lua = opaque {
     /// Returns if given typeinfo is a string type
     fn isTypeString(typeinfo: std.builtin.Type.Pointer) bool {
         const childinfo = @typeInfo(typeinfo.child);
-        if (typeinfo.child == u8 and typeinfo.size != .One) {
+        if (typeinfo.child == u8 and typeinfo.size != .one) {
             return true;
         } else if (typeinfo.size == .one and childinfo == .array and childinfo.array.child == u8) {
             return true;
@@ -4323,7 +4323,7 @@ pub const Lua = opaque {
     fn pushAnyString(lua: *Lua, value: anytype) !void {
         const info = @typeInfo(@TypeOf(value)).pointer;
         switch (info.size) {
-            .One => {
+            .one => {
                 const childinfo = @typeInfo(info.child).array;
                 std.debug.assert(childinfo.child == u8);
                 std.debug.assert(childinfo.sentinel != null);
@@ -4366,7 +4366,7 @@ pub const Lua = opaque {
                 if (comptime isTypeString(info)) {
                     try lua.pushAnyString(value);
                 } else switch (info.size) {
-                    .One => {
+                    .one => {
                         if (info.is_const) {
                             @compileLog(value);
                             @compileLog("Lua cannot guarantee that references will not be modified");
@@ -4699,7 +4699,7 @@ pub const Lua = opaque {
                 inline for (info.@"fn".params, 0..) |param, i| {
                     const param_info = @typeInfo(param.type.?);
                     //only use the overhead of creating the arena allocator if needed
-                    if (comptime param_info == .pointer and param_info.pointer.size != .One) {
+                    if (comptime param_info == .pointer and param_info.pointer.size != .one) {
                         const parsed = lua.toAnyAlloc(param.type.?, (i + 1)) catch |err| {
                             lua.raiseErrorStr(@errorName(err), .{});
                         };
